@@ -4,17 +4,18 @@ module.exports = {
     GetIncome: async (req, res, next) => {
         try {
             if (req.user.idrole === 1) {
+                let queryIncome, queryTopProductIncome = ``
                 if (req.query.from && req.query.to) {
-                    let queryIncome = `Select DATE(date_transaction) AS date, SUM(subtotal_harga_jual - subtotal_harga_beli) as income
+                    queryIncome = `Select DATE(date_transaction) AS date, SUM(subtotal_harga_jual - subtotal_harga_beli) as income
                     FROM tb_transaction where date_transaction BETWEEN ${db.escape(req.query.from)} AND ${db.escape(req.query.to)} GROUP BY DATE(date_transaction) ORDER BY date;`
-                    let queryTopProductIncome = `Select td.idproduct, p.nama, SUM(subtotal_harga_jual - subtotal_harga_beli) as profit from 
+                    queryTopProductIncome = `Select td.idproduct, p.nama, SUM(subtotal_harga_jual - subtotal_harga_beli) as profit from 
                     tb_transaction t join tb_transaction_detail td ON t.idtransaction = td.idtransaction
                     join tb_product p on p.idproduct = td.idproduct WHERE date_transaction BETWEEN ${db.escape(req.query.from)} AND ${db.escape(req.query.to)}
                     GROUP BY idproduct ORDER BY profit DESC;`
                 } else {
-                    let queryIncome = `Select DATE(date_transaction) AS date, SUM(subtotal_harga_jual - subtotal_harga_beli) as income
+                    queryIncome = `Select DATE(date_transaction) AS date, SUM(subtotal_harga_jual - subtotal_harga_beli) as income
                     FROM tb_transaction GROUP BY DATE(date_transaction) ORDER BY date;`
-                    let queryTopProductIncome = `Select td.idproduct, p.nama, SUM(subtotal_harga_jual - subtotal_harga_beli) as profit from 
+                    queryTopProductIncome = `Select td.idproduct, p.nama, SUM(subtotal_harga_jual - subtotal_harga_beli) as profit from 
                     tb_transaction t join tb_transaction_detail td ON t.idtransaction = td.idtransaction
                     join tb_product p on p.idproduct = td.idproduct
                     GROUP BY idproduct ORDER BY profit DESC;`
