@@ -22,6 +22,9 @@ db.getConnection((error, connection) => {
     console.log(`Connecting to MySQL Server as ID: ${connection.threadId}`)
 })
 
+const {UserRouter} = require("./routers")
+app.use("/user", UserRouter)
+
 // Error handling 
 app.use((error, request, response, next) => {
     console.log("Error", error)
