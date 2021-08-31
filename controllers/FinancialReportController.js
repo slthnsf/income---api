@@ -27,5 +27,19 @@ module.exports = {
         } catch (error) {
             next(error)
         }
+    },
+
+    GetExpenses: async (req, res, next) => {
+        try {
+            if (req.user.idrole === 1) {
+                let queryExpenses = `Select Sum(total) as expenses from tb_restock_product;`
+                let expenses = await dbQuery(queryExpenses)
+                res.status(200).send({ expenses: expenses[0].expenses })
+            } else {
+                res.status(400).send({ message: "Must be admin" })
+            }
+        } catch (error) {
+            next(error)
+        }
     }
 }
