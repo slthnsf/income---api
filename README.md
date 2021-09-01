@@ -103,3 +103,14 @@ Response:
     ]
 }
 ```
+
+### Read Asset
+Request:
+- Method: GET
+- Endpoint: `/budget/asset`
+Response:
+```json
+{
+    "asset": 8475000
+}
+```

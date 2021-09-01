@@ -41,5 +41,19 @@ module.exports = {
         } catch (error) {
             next(error)
         }
+    },
+
+    GetAsset: async (req, res, next) => {
+        try {
+            if (req.user.idrole === 1) {
+                let queryAsset = `Select sum(stok * harga_jual) as asset from tb_product;`
+                let asset = await dbQuery(queryAsset)
+                res.status(200).send({ asset: asset[0].asset })
+            } else {
+                res.status(400).send({ message: "Must be admin" })
+            }
+        } catch (error) {
+            next(error)
+        }
     }
 }
