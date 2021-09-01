@@ -13,7 +13,7 @@ Request:
     "password": "admin123"
 }
 ```
-Response:
+- Response:
 ```json
 {
     "iduser": 1,
@@ -34,7 +34,7 @@ Response:
 Request:
 - Method: GET
 - Endpoint: `/budget/income`
-Response:
+- Response:
 ```json
 {
     "total": 317000,
@@ -81,7 +81,7 @@ Response:
 Request:
 - Method: GET
 - Endpoint: `/budget/expenses`
-Response:
+- Response:
 ```json
 {
     "expenses": 190000,
@@ -108,7 +108,7 @@ Response:
 Request:
 - Method: GET
 - Endpoint: `/budget/asset`
-Response:
+- Response:
 ```json
 {
     "asset": 8475000
