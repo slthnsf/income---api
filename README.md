@@ -114,3 +114,6 @@ Request:
     "asset": 8475000
 }
 ```
+
+### Configure to MySQL
+Configuration MySql in config - database.js
