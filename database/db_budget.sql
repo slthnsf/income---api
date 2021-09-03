@@ -32,7 +32,9 @@ CREATE TABLE `tb_product` (
   `harga_beli` int NOT NULL,
   `harga_jual` int NOT NULL,
   `img` varchar(150) NOT NULL,
-  PRIMARY KEY (`idproduct`)
+  PRIMARY KEY (`idproduct`),
+  KEY `fk_status_idx` (`idstatus`),
+  CONSTRAINT `fk_product_status` FOREIGN KEY (`idstatus`) REFERENCES `tb_product_status` (`idproduct_status`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -85,7 +87,9 @@ CREATE TABLE `tb_restock_product` (
   `kuantity` int NOT NULL,
   `harga_beli` int NOT NULL,
   `total` int NOT NULL,
-  PRIMARY KEY (`idrestock_product`)
+  PRIMARY KEY (`idrestock_product`),
+  KEY `fk_product_idx` (`idproduct`),
+  CONSTRAINT `fk_idproduct` FOREIGN KEY (`idproduct`) REFERENCES `tb_product` (`idproduct`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -134,10 +138,12 @@ CREATE TABLE `tb_transaction` (
   `idtransaction` int NOT NULL AUTO_INCREMENT,
   `invoice` varchar(45) NOT NULL,
   `date_transaction` datetime NOT NULL,
-  `iduser` varchar(45) NOT NULL,
+  `iduser` int NOT NULL,
   `subtotal_harga_jual` varchar(45) NOT NULL,
   `subtotal_harga_beli` varchar(45) NOT NULL,
-  PRIMARY KEY (`idtransaction`)
+  PRIMARY KEY (`idtransaction`),
+  KEY `fk_user_idx` (`iduser`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`iduser`) REFERENCES `tb_user` (`iduser`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -147,7 +153,7 @@ CREATE TABLE `tb_transaction` (
 
 LOCK TABLES `tb_transaction` WRITE;
 /*!40000 ALTER TABLE `tb_transaction` DISABLE KEYS */;
-INSERT INTO `tb_transaction` VALUES (1,'#PP/16285221','2021-08-09 22:15:49','2','120000','100000'),(2,'#PP/16285227','2021-08-10 22:25:32','3','120000','105000'),(3,'#PP/16285829','2021-08-10 15:08:36','4','83000','68000'),(4,'#PP/16285831','2021-08-12 15:12:45','5','90000','80000'),(5,'#PP/16274482','2021-08-20 15:12:45','3','118000','105000'),(6,'#PP/16274483','2021-08-21 15:08:36','5','225000','195000'),(7,'#PP/16274484','2021-08-21 15:12:36','2','120000','90000'),(8,'#PP/16274485','2021-08-22 15:12:36','2','52000','30000'),(9,'#PP/16274486','2021-08-24 15:12:36','4','280000','246000'),(10,'#PP/16289896','2021-09-01 07:30:34','4','490000','410000'),(11,'#PP/16284937','2021-09-01 07:31:15','4','240000','192000');
+INSERT INTO `tb_transaction` VALUES (1,'#PP/16285221','2021-08-09 22:15:49',2,'120000','100000'),(2,'#PP/16285227','2021-08-10 22:25:32',3,'120000','105000'),(3,'#PP/16285829','2021-08-10 15:08:36',4,'83000','68000'),(4,'#PP/16285831','2021-08-12 15:12:45',5,'90000','80000'),(5,'#PP/16274482','2021-08-20 15:12:45',3,'118000','105000'),(6,'#PP/16274483','2021-08-21 15:08:36',5,'225000','195000'),(7,'#PP/16274484','2021-08-21 15:12:36',2,'120000','90000'),(8,'#PP/16274485','2021-08-22 15:12:36',2,'52000','30000'),(9,'#PP/16274486','2021-08-24 15:12:36',4,'280000','246000'),(10,'#PP/16289896','2021-09-01 07:30:34',4,'490000','410000'),(11,'#PP/16284937','2021-09-01 07:31:15',4,'240000','192000');
 /*!40000 ALTER TABLE `tb_transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +169,11 @@ CREATE TABLE `tb_transaction_detail` (
   `idtransaction` int NOT NULL,
   `idproduct` int NOT NULL,
   `kuantity` int NOT NULL,
-  PRIMARY KEY (`idtransaction_detail`)
+  PRIMARY KEY (`idtransaction_detail`),
+  KEY `fk_transaction_idx` (`idtransaction`),
+  KEY `fk_product_idx` (`idproduct`),
+  CONSTRAINT `fk_product` FOREIGN KEY (`idproduct`) REFERENCES `tb_product` (`idproduct`),
+  CONSTRAINT `fk_transaction` FOREIGN KEY (`idtransaction`) REFERENCES `tb_transaction` (`idtransaction`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -193,7 +203,11 @@ CREATE TABLE `tb_user` (
   `idstatus` int NOT NULL,
   `idrole` int NOT NULL,
   `otp` varchar(45) NOT NULL,
-  PRIMARY KEY (`iduser`)
+  PRIMARY KEY (`iduser`),
+  KEY `fk_status_idx` (`idstatus`),
+  KEY `fk_role_idx` (`idrole`),
+  CONSTRAINT `fk_role` FOREIGN KEY (`idrole`) REFERENCES `tb_role` (`idrole`),
+  CONSTRAINT `fk_status` FOREIGN KEY (`idstatus`) REFERENCES `tb_user_status` (`iduser_status`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -244,4 +258,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-03 14:28:46
+-- Dump completed on 2021-09-03 14:49:14
